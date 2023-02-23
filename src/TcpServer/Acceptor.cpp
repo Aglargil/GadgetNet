@@ -31,11 +31,11 @@ void Acceptor::listen() {
 }
 
 void Acceptor::handleRead() {
-    InetAddress clientAddr;
-    int connectionFd = acceptSocket_.accept(&clientAddr);
+    InetAddress pearAddr;
+    int connectionFd = acceptSocket_.accept(&pearAddr);
     if (connectionFd >= 0) {
         if (connectionCB_) {
-            connectionCB_(connectionFd, clientAddr);
+            connectionCB_(connectionFd, pearAddr);
         } else {
             ::close(connectionFd);
         }

@@ -7,6 +7,7 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include "Logger.h"
 #include "Poller.h"
 #include "EpollPoller.h"
 #include "Common.h"
@@ -28,19 +29,25 @@ public:
     void quit();
 
     void run(Functor cb);
-    void invoke(Functor cb);
 
     // 唤醒 EventLoop 所在线程
     void wakeup();
 
     // EventLoop 对象是否在自己的线程里
-    bool isInThread() const {return threadPid_ == std::this_thread::get_id();}
+    bool isInThread() const {
+        bool value = threadPid_ == std::this_thread::get_id();
+        LOG_DEBUG("isInThread:%d", value);
+        return value;
+        // return threadPid_ == std::this_thread::get_id();
+    }
 
     std::shared_ptr<Poller> poller() {return poller_;}
 
 private:
     void runCallbacks();
     void handleRead();
+
+    void invoke(Functor cb);
 
     std::atomic_bool looping_;
     std::atomic_bool quit_;

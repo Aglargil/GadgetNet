@@ -33,6 +33,12 @@ TEST_F(TestEventLoopPool, multiLoop) {
         pool_->start();
     });
 
+    auto func = []{LOG_DEBUG("testRun()");};
+
+    for (int i=0; i<10; ++i){
+        pool_->getNextLoop()->run(func);
+    }
+
     reallyAsync([this]{pool_->quit();});
 }
 int main() {

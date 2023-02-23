@@ -5,6 +5,7 @@
 #include <mutex>
 #include "EventLoop.h"
 #include "EpollPoller.h"
+#include "Logger.h"
 
 int createEventfd()
 {
@@ -57,6 +58,7 @@ void EventLoop::quit() {
     }
 }
 
+// 一般是在主线程里面循环调用每个子loop的run, 即每次都不在自己的线程中, 需要invoke
 void EventLoop::run(Functor cb) {
     FUNCTION_DEBUG;
     if (isInThread()) {
@@ -72,6 +74,7 @@ void EventLoop::invoke(Functor cb) {
         std::lock_guard<std::mutex> lock(mutex_);
         callbackVector_.emplace_back(cb);
     }
+    LOG_DEBUG("callbackVector_.size:%d", (int)callbackVector_.size());
     if (!isInThread() || callingCb_) {
         wakeup();
     }

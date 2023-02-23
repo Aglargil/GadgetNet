@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <iostream>
 #include <iterator>
+#include <mutex>
 #include <string>
 #include <sstream>
 #include <thread>
@@ -64,6 +65,10 @@ public:
             case DEBUG: prefix = "[DEBUG]["; break;
             default:                     break;
         }
+        std::lock_guard<std::recursive_mutex> lock(mutex_);
         std::cout << prefix + Timestamp::now().toString() + "]:" + msg << std::endl;
     }
+
+private:
+    std::recursive_mutex mutex_;
 };

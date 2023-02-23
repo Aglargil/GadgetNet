@@ -23,7 +23,7 @@ public:
         FUNCTION_DEBUG;
     }
 
-    virtual void poll(int timeoutMs = 100000) = 0;
+    virtual void poll(int timeoutMs = 10000) = 0;
 
     virtual void updateChannel(ChannelSPtr channel) = 0;
 
