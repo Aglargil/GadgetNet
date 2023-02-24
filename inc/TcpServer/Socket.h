@@ -23,7 +23,9 @@ public:
     void setReusePort(bool on) {setSockOpt(SO_REUSEPORT, on);}
     void setKeepAlive(bool on) {setSockOpt(SO_KEEPALIVE, on);}
 
+    const int fd() const {return fd_;}
+    
 private:
     void setSockOpt(int optName, bool on);
-    int fd_;
+    const int fd_;
 };
