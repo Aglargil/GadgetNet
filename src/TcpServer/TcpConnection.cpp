@@ -50,11 +50,12 @@ void TcpConnection::connectDestroyed() {
 void TcpConnection::send(const std::string& msg) {
     FUNCTION_DEBUG;
     if (state_ != State::CONNECTED) return;
-
-    loop_->run([this, &msg]{sendMessage(msg.c_str(), msg.length());});
+    LOG_INFO("msg:%s", msg.c_str());
+    loop_->run([this, msg]{sendMessage(msg.c_str(), msg.length());});
 }
 
 void TcpConnection::sendMessage(const char* data, size_t len) {
+    FUNCTION_DEBUG;
     // 在 loop 执行 sendMessage 之前有可能连接已经断开了
     if (state_ != State::CONNECTED) {
         LOG_ERROR("connection is not connected, send message \"%s\" fail", data);
@@ -62,10 +63,12 @@ void TcpConnection::sendMessage(const char* data, size_t len) {
 
     auto n = ::write(clientChannel_->getFd(), data, len);
     if (n >= 0) {
+        LOG_INFO("n=%d, fd:%d, msg:%s", (int)n, clientChannel_->getFd(), data);
         if (writeCB_) {
             loop_->run([this]{writeCB_(shared_from_this());});
         }
     } else {
+        LOG_INFO("n=%d, errno:%d", (int)n, errno);
         if (errno != EWOULDBLOCK) {
             LOG_ERROR("send message fail");
         }
