@@ -17,7 +17,7 @@ public:
     Acceptor(EventLoopSPtr loop, const InetAddress& listenAddr);
     ~Acceptor();
 
-    void setConnectionCallback(ConnectionCallback cb) {connectionCB_ = cb;}
+    void setConnectionCallback(const ConnectionCallback& cb) {connectionCB_ = cb;}
 
     void listen();
 

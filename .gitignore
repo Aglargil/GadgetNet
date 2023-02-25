@@ -18,6 +18,7 @@
 .nfs*
 
 ### VisualStudioCode ###
+.vscode
 .vscode/*
 .VSCodeCounter
 !.vscode/settings.json

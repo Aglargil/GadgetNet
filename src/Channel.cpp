@@ -1,5 +1,4 @@
 #include "Channel.h"
-#include "Logger.h"
 
 Channel::Channel(PollerWPtr poller, int fd)
     : poller_(poller)

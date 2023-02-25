@@ -1,17 +1,7 @@
 #pragma once
 
-#include <functional>
-#include <memory>
-#include <thread>
-#include <vector>
 #include "Common.h"
 #include "EventLoop.h"
-
-
-using EventLoopSPtr = std::shared_ptr<EventLoop>;
-using EventsubLoopVector = std::vector<EventLoopSPtr>;
-
-using initEventCallback = std::function<void(EventLoopSPtr)>;
 
 class EventLoopPool {
 
@@ -34,7 +24,7 @@ public:
 private:
     EventLoopSPtr baseLoop_;
     
-    EventsubLoopVector subLoopVector_;
+    EventLoopSPtrVector subLoopVector_;
     int subLoopVectorNum_;
     int nextLoopIndex_;
 

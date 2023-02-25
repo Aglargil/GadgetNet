@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <iostream>
 #include "Timestamp.h"
 
 // Timestamp::now()能否正常输出

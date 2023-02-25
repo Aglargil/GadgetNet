@@ -1,14 +1,7 @@
 #include <gtest/gtest.h>
 #include <sys/eventfd.h>
-#include <unistd.h>
-#include <cstdint>
-#include <future>
-#include <iostream>
-#include <memory>
 #include "Channel.h"
-#include "Common.h"
 #include "EpollPoller.h"
-#include "Logger.h"
 
 class TestChannel : public testing::Test {
 protected:
@@ -37,8 +30,8 @@ protected:
 };
 
 TEST_F(TestChannel, update) {
-    channel_->enableReading();
-    EXPECT_EQ(channel_->isReading(), true);
+    channel_->enableRead();
+    EXPECT_EQ(channel_->isReadable(), true);
     EXPECT_EQ(channel_->isNone(), false);
 }
 
@@ -56,7 +49,7 @@ TEST_F(TestChannel, event){
             ::read(fd_, &one, sizeof(one));
         });
 
-        channel_->enableReading();
+        channel_->enableRead();
         reallyAsync([this]{ 
             std::uint64_t buf = 1; 
             write(fd_, &buf, sizeof(buf));

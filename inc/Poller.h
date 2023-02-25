@@ -1,16 +1,11 @@
 #pragma once
 
-#include <map>
 #include <memory>
-#include <vector>
 #include "Channel.h"
-#include "Common.h"
 #include "Logger.h"
 
 class Channel;
-
 using ChannelSPtr = std::shared_ptr<Channel>;
-using ChannelSPtrVector = std::vector<ChannelSPtr>;
 
 class Poller {
 

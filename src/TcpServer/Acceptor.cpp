@@ -13,7 +13,7 @@ static int createNonblocking()
 Acceptor::Acceptor(EventLoopSPtr loop, const InetAddress& listenAddr)
     : loop_(loop)
     , acceptSocket_(createNonblocking())
-    , acceptChannel_(std::make_shared<Channel>(loop_->poller(), acceptSocket_.fd()))
+    , acceptChannel_(std::make_shared<Channel>(loop_->getPoller(), acceptSocket_.getFd()))
 {
     acceptSocket_.bindAddress(listenAddr);
     acceptChannel_->setReadCallback([this]{handleRead();});
@@ -27,7 +27,7 @@ Acceptor::~Acceptor() {
 
 void Acceptor::listen() {
     acceptSocket_.listen();
-    acceptChannel_->enableReading();
+    acceptChannel_->enableRead();
 }
 
 void Acceptor::handleRead() {

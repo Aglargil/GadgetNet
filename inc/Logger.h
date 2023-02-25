@@ -1,12 +1,9 @@
 #pragma once
 
-#include <cstdio>
 #include <iostream>
-#include <iterator>
 #include <mutex>
 #include <string>
 #include <sstream>
-#include <thread>
 #include "Common.h"
 #include "Timestamp.h"
 

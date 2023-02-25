@@ -1,10 +1,6 @@
-#include "EpollPoller.h"
-#include <sys/epoll.h>
-#include <unistd.h>
 #include <cstring>
-#include "Channel.h"
-#include "Logger.h"
-#include "Poller.h"
+#include <unistd.h>
+#include "EpollPoller.h"
 
 EpollPoller::EpollPoller()
     : Poller()
@@ -23,7 +19,7 @@ EpollPoller::~EpollPoller() {
 void EpollPoller::poll(int timeoutMs) {
     int eventsNum = ::epoll_wait(epollFd_, &*eventVector_.begin(), static_cast<int>(eventVector_.size()), timeoutMs);
     if (eventsNum > 0) {
-        LOG_DEBUG("%d events happend", eventsNum);
+        LOG_DEBUG("%d events happened", eventsNum);
 
         activeChannels(eventsNum);
 
@@ -40,10 +36,10 @@ void EpollPoller::poll(int timeoutMs) {
 
 void EpollPoller::updateChannel(ChannelSPtr channel) {
     FUNCTION_DEBUG;
-    ChannelStatus status = channel->getStatus();
+    auto status = channel->getStatus();
     switch (status) {
         case ChannelStatus::NEW: {
-            channelMap_[channel->fd()] = channel;
+            channelMap_[channel->getFd()] = channel;
             // 不需要 break, 状态为 NEW 和 DELETED 的 channel 都需要 update
         }
         case ChannelStatus::DELETED: {
@@ -65,9 +61,9 @@ void EpollPoller::updateChannel(ChannelSPtr channel) {
 }
 
 void EpollPoller::removeChannel(ChannelSPtr channel) {
-    channelMap_.erase(channel->fd());
+    channelMap_.erase(channel->getFd());
     
-    ChannelStatus status = channel->getStatus();
+    auto status = channel->getStatus();
     if (status == ChannelStatus::ADDED) {
         update(EPOLL_CTL_DEL, channel);
     }
@@ -85,15 +81,15 @@ void EpollPoller::activeChannels(int eventsNum) {
 }
 
 void EpollPoller::update(int operation, ChannelSPtr channel) {
-    FUNCTION_DEBUG;
+    LOG_DEBUG("fd:%d, operation:%d", channel->getFd(), operation);
     epoll_event event;
     ::memset(&event, 0, sizeof(event));
 
-    event.events = channel->inEvents();
-    event.data.fd = channel->fd();
+    event.events = channel->getInEvents();
+    event.data.fd = channel->getFd();
     event.data.ptr = channel.get();
 
-    if (::epoll_ctl(epollFd_, operation, channel->fd(), &event) < 0) {
+    if (::epoll_ctl(epollFd_, operation, channel->getFd(), &event) < 0) {
         LOG_ERROR("epoll_ctl error:%d\n", errno);
     }
 }

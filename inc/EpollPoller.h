@@ -1,12 +1,11 @@
 #pragma once
-
-#include <sys/epoll.h>
 #include <unordered_map>
 #include <vector>
 #include "Poller.h"
+#include "Channel.h"
 
-using ChannelSPtrMap = std::unordered_map<int, ChannelSPtr>;
 using EventVector = std::vector<epoll_event>;
+using ChannelSPtrMap = std::unordered_map<int, ChannelSPtr>;
 
 class EpollPoller : public Poller {
 

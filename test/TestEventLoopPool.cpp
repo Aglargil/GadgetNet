@@ -1,12 +1,6 @@
 #include <gtest/gtest.h>
-#include <iostream>
-#include <memory>
-#include "Common.h"
-#include "EventLoop.h"
 #include "EventLoopPool.h"
-#include "Logger.h"
 
-using EventLoopSPtr = std::shared_ptr<EventLoop>;
 using EventLoopPoolSPtr = std::shared_ptr<EventLoopPool>;
 
 class TestEventLoopPool : public testing::Test {

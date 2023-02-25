@@ -1,20 +1,20 @@
 #pragma once
 
 #include <atomic>
-#include <ctime>
 #include <functional>
 #include <memory>
 #include <mutex>
 #include <thread>
 #include <vector>
 #include "Logger.h"
-#include "Poller.h"
 #include "EpollPoller.h"
 #include "Common.h"
 
-class Poller;
-class Channel;
+class EventLoop;
 
+using EventLoopSPtr = std::shared_ptr<EventLoop>;
+using EventLoopSPtrVector = std::vector<EventLoopSPtr>;
+using initEventCallback = std::function<void(EventLoopSPtr)>;
 using Functor = std::function<void()>;
 
 class EventLoop {
@@ -34,14 +34,9 @@ public:
     void wakeup();
 
     // EventLoop 对象是否在自己的线程里
-    bool isInThread() const {
-        bool value = threadPid_ == std::this_thread::get_id();
-        LOG_DEBUG("isInThread:%d", value);
-        return value;
-        // return threadPid_ == std::this_thread::get_id();
-    }
+    bool isInThread() const { return threadPid_ == std::this_thread::get_id();}
 
-    std::shared_ptr<Poller> poller() {return poller_;}
+    std::shared_ptr<Poller> getPoller() {return poller_;}
 
 private:
     void runCallbacks();

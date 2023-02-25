@@ -11,3 +11,5 @@ enable_testing()
 
 # 添加测试目录
 add_subdirectory(test)
+
+add_subdirectory(example)

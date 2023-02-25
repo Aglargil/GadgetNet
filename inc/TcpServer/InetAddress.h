@@ -3,6 +3,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <cstdio>
 #include <cstring>
 #include <string>
 
@@ -22,6 +23,17 @@ public:
 
     sockaddr* toSockaddr() const {
         return (sockaddr*)(&addr_);
+    }
+
+    std::string toString() const {
+        char buf[64] = {0};
+        ::inet_ntop(AF_INET, &addr_.sin_addr, buf, sizeof(buf));
+
+        auto end = ::strlen(buf);
+        auto port = ::ntohs(addr_.sin_port);
+        sprintf(buf+end, ":%u", port);
+        
+        return buf;
     }
 
     void setSockAddr(sockaddr_in addr) {addr_ = addr;}

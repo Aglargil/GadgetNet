@@ -1,9 +1,4 @@
 #include "EventLoopPool.h"
-#include <future>
-#include <memory>
-#include "Common.h"
-#include "Logger.h"
-
 
 EventLoopPool::EventLoopPool(EventLoopSPtr loop) 
     : baseLoop_(loop)
@@ -13,8 +8,6 @@ EventLoopPool::EventLoopPool(EventLoopSPtr loop)
 {
     FUNCTION_DEBUG;
 }
-
-
 
 EventLoopPool::~EventLoopPool() {
     FUNCTION_DEBUG;
@@ -36,7 +29,7 @@ void EventLoopPool::start(initEventCallback cb) {
     for (int i = 0; i < subLoopVectorNum_; ++i) {
         auto future = reallyAsync(
         [this, cb]{
-            EventLoopSPtr loop = std::make_shared<EventLoop>();
+            auto loop = std::make_shared<EventLoop>();
             if (cb) {cb(loop);}
             return loop;
         });

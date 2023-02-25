@@ -1,9 +1,5 @@
 #include <gtest/gtest.h>
-#include <iostream>
-#include <memory>
-#include <future>
 #include "EventLoop.h"
-#include "Common.h"
 
 TEST(TestEventLoop, loop) {
     auto loop = std::make_unique<EventLoop>(); 
@@ -11,7 +7,6 @@ TEST(TestEventLoop, loop) {
     auto runFuture = reallyAsync(
     [&loop]{
         loop->run([]{std::cout << "run()" << std::endl;});
-        // loop->quit();
         loop->quit();
     });
     loopFuture.get();

@@ -1,10 +1,5 @@
 #include <gtest/gtest.h>
-#include <future>
-#include <iostream>
-#include <memory>
-#include "Channel.h"
 #include "EpollPoller.h"
-#include "Poller.h"
 
 class TestEpollPoller : public testing::Test {
 

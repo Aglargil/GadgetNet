@@ -1,11 +1,6 @@
 #include <sys/eventfd.h>
 #include <unistd.h>
-#include <cstdint>
-#include <memory>
-#include <mutex>
 #include "EventLoop.h"
-#include "EpollPoller.h"
-#include "Logger.h"
 
 int createEventfd()
 {
@@ -28,7 +23,7 @@ EventLoop::EventLoop()
 {
     FUNCTION_DEBUG;
     wakeupChannel_->setReadCallback([this]{handleRead();});
-    wakeupChannel_->enableReading();
+    wakeupChannel_->enableRead();
 }
 
 EventLoop::~EventLoop() {
