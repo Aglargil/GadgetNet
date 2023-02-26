@@ -18,7 +18,7 @@ EventLoop::EventLoop()
     , threadPid_(std::this_thread::get_id())
     , poller_(std::make_shared<EpollPoller>())
     , wakeupFd_(createEventfd())
-    , wakeupChannel_(std::make_shared<Channel>(poller_, wakeupFd_))
+    , wakeupChannel_(Channel::create(poller_, wakeupFd_))
     , callingCb_(false)
 {
     FUNCTION_DEBUG;

@@ -8,7 +8,7 @@ protected:
         poller_ = std::make_shared<EpollPoller>();
 
         int fd_ = -1;
-        channel_ = std::make_shared<Channel>(poller_, fd_);
+        channel_ = Channel::create(poller_, fd_);
     }
 
     std::shared_ptr<Poller> poller_;

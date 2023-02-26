@@ -38,13 +38,11 @@ enum class ChannelStatus {
 class Channel : public std::enable_shared_from_this<Channel> {
 
 public:
-    NONCOPYABLE(Channel)
-
-    Channel(PollerWPtr poller, int fd);
-
-    ~Channel() {
-        FUNCTION_DEBUG;
+    static std::shared_ptr<Channel> create(PollerWPtr poller, int fd) {
+        return std::make_shared<Channel>(poller, fd);
     }
+    Channel(PollerWPtr poller, int fd);
+    ~Channel() {FUNCTION_DEBUG;}
 
     void handleEvent();
 
@@ -79,6 +77,8 @@ public:
     void setErrorCallback(const EventCallback& cb) {errorCB_ = cb;}
 
 private:
+    NONCOPYABLE(Channel)
+
     PollerWPtr poller_;
     const int fd_;
     int inEvents_;   // 注册fd感兴趣的事件

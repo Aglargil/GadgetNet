@@ -7,7 +7,7 @@
 TcpConnection::TcpConnection(EventLoopSPtr loop, int clientFd, const InetAddress& clientAddr) 
     : loop_(loop)
     , clientSocket_(clientFd)
-    , clientChannel_(std::make_shared<Channel>(loop_->getPoller(), clientFd))
+    , clientChannel_(Channel::create(loop_->getPoller(), clientFd))
     , clientAddr_(clientAddr)
     , state_(State::CONNECTING)
 {

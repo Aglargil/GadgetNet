@@ -10,7 +10,7 @@ protected:
         poller_ = std::make_shared<EpollPoller>();
 
         fd_ = ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
-        channel_ = std::make_shared<Channel>(poller_, fd_);
+        channel_ = Channel::create(poller_, fd_);
 
         EXPECT_EQ(channel_->isNone(), true);
 

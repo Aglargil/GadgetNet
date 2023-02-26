@@ -15,6 +15,10 @@ using messageCallback = std::function<void(TcpConnectionSPtr, const std::string&
 class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
 
 public:
+    static TcpConnectionSPtr create(EventLoopSPtr loop, int clientFd, const InetAddress& clientAddr) {
+        return std::make_shared<TcpConnection>(loop, clientFd, clientAddr);
+    }
+    
     TcpConnection(EventLoopSPtr loop, int clientFd, const InetAddress& clientAddr);
     ~TcpConnection();
 

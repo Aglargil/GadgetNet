@@ -8,9 +8,9 @@ using EventLoopSPtr = std::shared_ptr<EventLoop>;
 using TcpConnectionSPtr = std::shared_ptr<TcpConnection>;
 
 TEST(TcpConnectionTest, main) {
-    EventLoopSPtr loop = std::make_shared<EventLoop>();
+    auto loop = std::make_shared<EventLoop>();
     InetAddress addr;
-    TcpConnectionSPtr conn = std::make_shared<TcpConnection>(loop, 0, addr);
+    auto conn = std::make_shared<TcpConnection>(loop, 0, addr);
     conn->connectEstablished();
     conn->connectDestroyed();
 }
