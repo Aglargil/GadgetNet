@@ -71,3 +71,14 @@ void TcpServer::start() {
 
     baseLoop_->loop();
 }
+
+void TcpServer::foreachConnection(const TcpConnectionCallback& cb) {
+    decltype(connectionMap_) temp;
+    {
+        std::lock_guard<std::mutex> lock(connectionMapMutex_);
+        temp = connectionMap_;
+    }
+    for (const auto& it : temp) {
+        cb(it.second);
+    }
+}

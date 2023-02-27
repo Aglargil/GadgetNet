@@ -30,6 +30,8 @@ public:
     void setCloseCallback(const TcpConnectionCallback& cb) {closeCB_ = cb;}
     void setErrorCallback(const TcpConnectionCallback& cb) {errorCB_ = cb;}
 
+    // 线程安全地遍历所有 TcpConnection
+    void foreachConnection(const TcpConnectionCallback& cb);
 private:
     void newConnection(int socket, const InetAddress& peerAddr);
 

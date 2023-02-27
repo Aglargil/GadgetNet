@@ -1,18 +1,17 @@
 #include "TcpServer/TcpServer.h"
 
-class EchoServer {
+class ChatServer {
 public:
-    EchoServer(std::string ip, uint16_t port) : tcpServer_(ip, port)
+    ChatServer(std::string ip, uint16_t port) : tcpServer_(ip, port)
     {
         tcpServer_.setSubLoopsNum(5);
         tcpServer_.setMessageCallback(
         [this](TcpConnectionSPtr conn, const std::string& msg)
             {onMessage(conn, msg);
         });
-
     }
 
-    ~EchoServer() = default;
+    ~ChatServer() = default;
 
     void start() {
         tcpServer_.start();
@@ -21,13 +20,17 @@ public:
 private:
     void onMessage(TcpConnectionSPtr conn, const std::string& msg) {
         LOG_INFO("%s:%s", conn->getName().c_str(), msg.c_str());
-        conn->send("echo");
+        tcpServer_.foreachConnection(
+        [&msg, &conn](TcpConnectionSPtr other){
+            if (conn == other) return; // 过滤自己发送的消息
+            other->send(other->getName() + ":" + msg);
+        });
     }
 
     TcpServer tcpServer_;
 };
 
 int main() {
-    EchoServer server("0.0.0.0", 51121);
+    ChatServer server("0.0.0.0", 51121);
     server.start();
 }
