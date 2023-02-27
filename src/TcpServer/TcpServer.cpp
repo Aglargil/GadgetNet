@@ -31,7 +31,7 @@ void TcpServer::newConnection(int socket, const InetAddress& peerAddr) {
     auto conn = std::make_shared<TcpConnection>(pool_.getNextLoop(), socket, peerAddr);
 
     conn->getLoop()->run(
-    [this, &conn] {
+    [this, conn] {
         conn->connectEstablished();
 
         if (connectCB_) conn->setConnectCallback(connectCB_);
@@ -55,7 +55,7 @@ void TcpServer::newConnection(int socket, const InetAddress& peerAddr) {
 
 void TcpServer::removeConnection(TcpConnectionSPtr conn) {
     FUNCTION_DEBUG;
-    conn->getLoop()->run([this, &conn]{conn->connectDestroyed();});
+    conn->getLoop()->run([this, conn]{conn->connectDestroyed();});
     {
         std::lock_guard<std::mutex> lock(connectionMapMutex_);
         connectionMap_.erase(conn->getName());

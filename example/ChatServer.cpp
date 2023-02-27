@@ -21,7 +21,7 @@ private:
     void onMessage(TcpConnectionSPtr conn, const std::string& msg) {
         LOG_INFO("%s:%s", conn->getName().c_str(), msg.c_str());
         tcpServer_.foreachConnection(
-        [&msg, &conn](TcpConnectionSPtr other){
+        [&msg, conn](TcpConnectionSPtr other){
             if (conn == other) return; // 过滤自己发送的消息
             other->send(other->getName() + ":" + msg);
         });

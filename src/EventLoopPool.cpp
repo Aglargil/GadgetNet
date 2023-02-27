@@ -38,8 +38,8 @@ void EventLoopPool::start(initEventCallback cb) {
 
     // EventLoop 开启 loop
     // Item 38：Be aware of varying thread handle destructor behavior
-    for (const auto& loop : subLoopVector_) {
-        std::packaged_task<void()> pt([&loop]{loop->loop();});
+    for (const auto loop : subLoopVector_) {
+        std::packaged_task<void()> pt([loop]{loop->loop();});
         threadVector_.emplace_back(std::move(pt));
     }
 }
@@ -47,8 +47,8 @@ void EventLoopPool::start(initEventCallback cb) {
 void EventLoopPool::quit() {
     FUNCTION_DEBUG;
     // EventLoop 退出 loop
-    for (const auto& loop : subLoopVector_) {
-        reallyAsync([&loop]{loop->quit();});
+    for (const auto loop : subLoopVector_) {
+        reallyAsync([loop]{loop->quit();});
     }
 }
 
