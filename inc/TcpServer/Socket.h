@@ -8,7 +8,7 @@ class Socket {
 public:
     explicit Socket(int fd) : fd_(fd) {}
     
-    ~Socket(){::close(fd_);}
+    ~Socket() {::close(fd_);}
 
     void bindAddress(const InetAddress &addr);
 

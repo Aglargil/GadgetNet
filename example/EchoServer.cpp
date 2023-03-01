@@ -6,8 +6,8 @@ public:
     {
         tcpServer_.setSubLoopsNum(5);
         tcpServer_.setMessageCallback(
-        [this](TcpConnectionSPtr conn, const std::string& msg)
-            {onMessage(conn, msg);
+        [this](TcpConnectionSPtr conn, const std::string& msg) {
+            onMessage(conn, msg);
         });
 
     }

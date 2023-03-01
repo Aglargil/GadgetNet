@@ -99,8 +99,8 @@ public:
     {
         tcpServer_.setSubLoopsNum(5);
         tcpServer_.setMessageCallback(
-        [this](TcpConnectionSPtr conn, const std::string& msg)
-            {onMessage(conn, msg);
+        [this](TcpConnectionSPtr conn, const std::string& msg) {
+            onMessage(conn, msg);
         });
     }
 
@@ -123,7 +123,7 @@ private:
         } else {
             std::string name = clientManager_.getAccountByConn(conn);
             tcpServer_.foreachConnection(
-            [&name, &msg, conn](TcpConnectionSPtr other){
+            [&name, &msg, conn](TcpConnectionSPtr other) {
                 if (conn == other) return; // 过滤自己发送的消息
                 other->send(name + ":" + msg);
             });
@@ -136,7 +136,7 @@ private:
         if (cmd == "登录" || cmd == "注册") {
             // 登录命令的形式为 "登录|用户名|密码"
             // 注册命令的形式为 "注册|用户名|密码"
-            auto parseAccountPassword = [&args](std::string& account, std::string& password){
+            auto parseAccountPassword = [&args](std::string& account, std::string& password) {
                 auto index = args.find_first_of("|");
                 if (index < args.size()) {
                     account = args.substr(0, index);
@@ -151,7 +151,7 @@ private:
             if (parseAccountPassword(account, password).code == ErrorCode::SUCCEED) {
                 if (cmd == "登录") {
                     conn->send(clientManager_.loginAccount(account, password, conn).msg);
-                } else if (cmd == "注册"){
+                } else if (cmd == "注册") {
                     conn->send(clientManager_.registerAccount(account, password, conn).msg);
                 }
             } else {

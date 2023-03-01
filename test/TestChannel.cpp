@@ -39,18 +39,20 @@ TEST_F(TestChannel, handleEvent) {
     channel_->handleEvent();
 }
 
-TEST_F(TestChannel, event){
+TEST_F(TestChannel, event) {
         FUNCTION_DEBUG;
 
         future = reallyAsync([this]{poller_->poll();  });
         
-        channel_->setReadCallback([this]{
+        channel_->setReadCallback(
+        [this]{
             std::uint64_t one = 1;
             ::read(fd_, &one, sizeof(one));
         });
 
         channel_->enableRead();
-        reallyAsync([this]{ 
+        reallyAsync(
+        [this]{ 
             std::uint64_t buf = 1; 
             write(fd_, &buf, sizeof(buf));
         });

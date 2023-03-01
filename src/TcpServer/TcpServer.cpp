@@ -41,7 +41,7 @@ void TcpServer::newConnection(int socket, const InetAddress& peerAddr) {
 
         // 设置关闭连接的 callback
         conn->setCloseCallback(
-        [this](TcpConnectionSPtr conn){
+        [this](TcpConnectionSPtr conn) {
             removeConnection(conn);
             if (closeCB_) conn->setCloseCallback(closeCB_);
         });

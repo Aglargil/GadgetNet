@@ -52,7 +52,7 @@ public:
         return logger;
     }
 
-    void log(LogLevel level, const std::string& msg){
+    void log(LogLevel level, const std::string& msg) {
         std::string prefix = "";
         switch (level)
         {
