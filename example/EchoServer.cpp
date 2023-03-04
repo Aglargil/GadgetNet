@@ -22,6 +22,7 @@ private:
     void onMessage(TcpConnectionSPtr conn, const std::string& msg) {
         LOG_INFO("%s:%s", conn->getName().c_str(), msg.c_str());
         conn->send("echo");
+        conn->getLoop()->delayRun(5000, [conn]{conn->send("delay echo");});
     }
 
     TcpServer tcpServer_;

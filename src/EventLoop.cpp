@@ -1,6 +1,8 @@
 #include <sys/eventfd.h>
 #include <unistd.h>
 #include "EventLoop.h"
+#include "Logger.h"
+#include "Timestamp.h"
 
 int createEventfd()
 {
@@ -38,7 +40,8 @@ void EventLoop::loop() {
     // quit_ = false;   // quit 以后就不能再进入循环了
 
     while (!quit_) {
-        poller_->poll();
+        poller_->poll(timerManager_.getInterval());
+        timerManager_.tick();
         runCallbacks();
     }
     looping_ = false;
@@ -61,6 +64,19 @@ void EventLoop::run(Functor cb) {
     } else {
         invoke(cb);
     }
+}
+
+TimerSPtr EventLoop::delayRun(int timeoutMS, Functor cb) {
+    FUNCTION_DEBUG;
+    auto timer = timerManager_.addTimer(timeoutMS, cb);
+    wakeup();
+    return timer;
+}
+
+void EventLoop::dismiss(TimerSPtr timer) {
+    FUNCTION_DEBUG;
+    timerManager_.deleteTimer(timer);
+    wakeup();
 }
 
 void EventLoop::invoke(Functor cb) {

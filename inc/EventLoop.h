@@ -9,6 +9,7 @@
 #include "Logger.h"
 #include "EpollPoller.h"
 #include "Common.h"
+#include "Timer.h"
 
 class EventLoop;
 
@@ -24,11 +25,17 @@ public:
 
     EventLoop();
     ~EventLoop();
+    static EventLoopSPtr create() {
+        return std::make_shared<EventLoop>();
+    }
 
     void loop();
     void quit();
 
     void run(Functor cb);
+
+    TimerSPtr delayRun(int timeoutMS, Functor cb);
+    void dismiss(TimerSPtr);
 
     // 唤醒 EventLoop 所在线程
     void wakeup();
@@ -57,4 +64,6 @@ private:
     std::atomic_bool callingCb_;
     std::vector<Functor> callbackVector_;
     std::mutex mutex_;
+
+    TimerManager timerManager_;
 };

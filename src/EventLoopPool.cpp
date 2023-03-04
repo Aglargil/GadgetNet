@@ -1,8 +1,8 @@
 #include "EventLoopPool.h"
 
-EventLoopPool::EventLoopPool(EventLoopSPtr loop) 
+EventLoopPool::EventLoopPool( int subLoopVectorNum, EventLoopSPtr loop) 
     : baseLoop_(loop)
-    , subLoopVectorNum_(0)
+    , subLoopVectorNum_(subLoopVectorNum)
     , nextLoopIndex_(0)
     , started_(false)
 {

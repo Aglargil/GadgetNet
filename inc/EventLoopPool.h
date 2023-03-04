@@ -8,7 +8,8 @@ class EventLoopPool {
 public:
     NONCOPYABLE(EventLoopPool)
 
-    EventLoopPool(EventLoopSPtr loop);
+    EventLoopPool(int subLoopVectorNum = 0, EventLoopSPtr loop = EventLoop::create());
+    EventLoopPool(EventLoopSPtr loop) {EventLoopPool(0, loop);}
     ~EventLoopPool();
 
     void start(initEventCallback cb = initEventCallback());

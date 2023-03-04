@@ -14,7 +14,7 @@ public:
     
     ~EpollPoller() override;
 
-    void poll(int timeout) override;
+    void poll(int timeoutMS) override;
 
     void updateChannel(ChannelSPtr channel) override;
 
