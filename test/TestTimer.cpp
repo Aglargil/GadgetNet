@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <unistd.h>
 #include <iostream>
 #include "EventLoop.h"
 #include "Timer.h"
