@@ -8,7 +8,7 @@
 #include <vector>
 
 class TaskNode;
-using TaskNodeSPtr = std::shared_ptr<TaskNode>;;
+using TaskNodeSPtr = std::shared_ptr<TaskNode>;
 
 class TaskNode :std::enable_shared_from_this<TaskNode> {
 
